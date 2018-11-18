@@ -196,6 +196,30 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "Roles - Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/roles/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"roles",
+								"2"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -269,6 +293,89 @@
 								"membershipRoles",
 								"1",
 								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MembershipRoles - Create",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"roleId\": \"2\",\n    \"userId\": \"16\",\n    \"teamId\": \"3\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/membershipRoles",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"membershipRoles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MembershipRoles - GetByRoleId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/membershipRoles?roleId=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"membershipRoles"
+							],
+							"query": [
+								{
+									"key": "roleId",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MembershipRoles - Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "http://localhost:8080/membershipRoles/5",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"membershipRoles",
+								"5"
 							]
 						}
 					},

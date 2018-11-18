@@ -24,7 +24,7 @@ class RoleController {
     @GetMapping("/roles/{roleId}")
     Role one(@PathVariable Long roleId) {
         return roleRepository.findById(roleId)
-                .orElseThrow(() -> new RoleNotFoundException(roleId));
+                .orElseThrow(() -> new RuntimeException("Could not find Role with id " + roleId));
     }
 
     @PostMapping("/roles")
@@ -34,6 +34,9 @@ class RoleController {
 
     @DeleteMapping("/roles/{roleId}")
     void deleteRole(@PathVariable Long roleId){
+
+        // If default Role - throw error
+        if (roleId == 1) throw new RuntimeException("You cannot delete the default Role!");
 
         // Delete all MembershipRole records that are linked to this Role
         membershipRoleRepository.deleteByRoleId(roleId);

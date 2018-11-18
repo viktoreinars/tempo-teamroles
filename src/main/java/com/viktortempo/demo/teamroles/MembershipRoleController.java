@@ -1,5 +1,7 @@
 package com.viktortempo.demo.teamroles;
 
+import com.viktortempo.demo.roles.Role;
+import com.viktortempo.demo.roles.RoleRepository;
 import com.viktortempo.demo.services.User;
 import com.viktortempo.demo.services.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -12,12 +14,14 @@ import java.util.List;
 class MembershipRoleController {
 
     private final MembershipRoleRepository membershipRoleRepository;
+    private final RoleRepository roleRepository;
     @Autowired
     private UserService userService;
 
-    MembershipRoleController(MembershipRoleRepository membershipRoleRepository){
+    MembershipRoleController(MembershipRoleRepository membershipRoleRepository, RoleRepository roleRepository){
 
         this.membershipRoleRepository = membershipRoleRepository;
+        this.roleRepository = roleRepository;
     }
 
     @GetMapping("/membershipRoles")
@@ -28,7 +32,7 @@ class MembershipRoleController {
     @GetMapping("/membershipRoles/{id}")
     MembershipRole one(@PathVariable Long id) {
         return membershipRoleRepository.findById(id)
-                .orElseThrow(() -> new MembershipRoleNotFoundException(id));
+                .orElseThrow(() -> new RuntimeException("Could not find MembershipRole with id " + id));
     }
 
     @GetMapping("/membershipRoles/{userId}/{teamId}")
@@ -49,7 +53,7 @@ class MembershipRoleController {
         }
 
         // Throw exception if we could not find the MembershipRole with the given parameters
-        if (membershipRole == null) throw new MembershipRoleNotFoundException(userId, teamId);
+        if (membershipRole == null) throw new RuntimeException("Could not find MembershipRole with userId " + userId + " and teamId " + teamId);
 
         // Return the membershipRole
         return membershipRole;
@@ -57,6 +61,11 @@ class MembershipRoleController {
 
     @GetMapping(path = "/membershipRoles", params = { "roleId" })
     List<MembershipRole> getMembershipRolesByRoleId(@RequestParam(value = "roleId") Long roleId) {
+
+        // If this is default role - throw error
+        if (roleId == 1) throw new RuntimeException("Every Membership is in fact a 'Developer' Membership, " +
+                                                    "these are stored in the Teams API. " +
+                                                    "For other Roles you can use this endpoint.");
 
         // Find the MembershipRoles in question
         return membershipRoleRepository.findByRoleId(roleId);
@@ -68,6 +77,10 @@ class MembershipRoleController {
         // Check if MembershipRole already exists
         MembershipRole existingMembershipRole = membershipRoleRepository.findByUserIdAndTeamId(membershipRole.getUserId(), membershipRole.getTeamId());
         if (existingMembershipRole != null) throw new RuntimeException("MembershipRole record with userId " + membershipRole.getUserId() + " and teamId " + membershipRole.getTeamId() + " already exists!");
+
+        // Check if role exists
+        Role role = roleRepository.findById(membershipRole.getRoleId())
+                .orElseThrow(() -> new RuntimeException("Could not find Role with id " + membershipRole.getRoleId()));
 
         // Get User from Teams endpoint
         User user = userService.GetUser(membershipRole.getUserId());
