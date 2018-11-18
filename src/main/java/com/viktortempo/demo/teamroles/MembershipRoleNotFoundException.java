@@ -7,6 +7,6 @@ public class MembershipRoleNotFoundException extends RuntimeException {
     }
 
     MembershipRoleNotFoundException(Long userId, Long teamId) {
-        super("Could not find MembershipRole with userId " + userId + "and teamId " + teamId);
+        super("Could not find MembershipRole with userId " + userId + " and teamId " + teamId);
     }
 }

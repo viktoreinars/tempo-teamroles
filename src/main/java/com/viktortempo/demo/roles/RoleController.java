@@ -1,5 +1,6 @@
 package com.viktortempo.demo.roles;
 
+import com.viktortempo.demo.teamroles.MembershipRoleRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -8,9 +9,11 @@ import java.util.List;
 class RoleController {
 
     private final RoleRepository roleRepository;
+    private final MembershipRoleRepository membershipRoleRepository;
 
-    RoleController(RoleRepository roleRepository){
+    RoleController(RoleRepository roleRepository, MembershipRoleRepository membershipRoleRepository){
         this.roleRepository = roleRepository;
+        this.membershipRoleRepository = membershipRoleRepository;
     }
 
     @GetMapping("/roles")
@@ -18,10 +21,10 @@ class RoleController {
         return roleRepository.findAll();
     }
 
-    @GetMapping("/roles/{id}")
-    Role one(@PathVariable Long id) {
-        return roleRepository.findById(id)
-                .orElseThrow(() -> new RoleNotFoundException(id));
+    @GetMapping("/roles/{roleId}")
+    Role one(@PathVariable Long roleId) {
+        return roleRepository.findById(roleId)
+                .orElseThrow(() -> new RoleNotFoundException(roleId));
     }
 
     @PostMapping("/roles")
@@ -29,8 +32,13 @@ class RoleController {
         return roleRepository.save(role);
     }
 
-    @DeleteMapping("/roles/{id}")
-    void deleteRole(@PathVariable Long id){
-        roleRepository.deleteById(id);
+    @DeleteMapping("/roles/{roleId}")
+    void deleteRole(@PathVariable Long roleId){
+
+        // Delete all MembershipRole records that are linked to this Role
+        membershipRoleRepository.deleteByRoleId(roleId);
+
+        // Delete the Role
+        roleRepository.deleteById(roleId);
     }
 }
