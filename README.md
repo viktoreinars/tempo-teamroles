@@ -1,4 +1,4 @@
-#Team Roles API
+# Team Roles API
 
 Author: Viktor Einarsson
 
@@ -46,6 +46,7 @@ I chose to look at it this way:
 Since I am returning a "fake" object for the default value I do not have an Id for the MembershipRole object 
 and chose to have it null and would have explained that well in the API documentation. 
 
+##### 2. Fetching MembershipRoles for a certain role:
 Retrieving MembershipRoles by roleId is a bit harder. Since every membership is in fact a "Developer" membership and I do not have the 
 data on the roles I cannot simply return data from my database and be certain it is complete. Some options for dealing with this:
 
