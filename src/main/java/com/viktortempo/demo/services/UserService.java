@@ -10,7 +10,8 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class UserService {
 
-    private final String userEndpointUrl = "http://tempo-test.herokuapp.com/7d1d085e-dbee-4483-aa29-ca033ccae1e4/1/user/%s"; // TODO: Make configurable
+    // TODO: Make configurable
+    private final String userEndpointUrl = "http://tempo-test.herokuapp.com/7d1d085e-dbee-4483-aa29-ca033ccae1e4/1/user/%s";
 
     public UserService() {}
 

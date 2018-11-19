@@ -2,8 +2,16 @@
 
 Author: Viktor Einarsson
 
+## How to run
 
-##CHALLENGES:
+Under classes/artifacts/ there is the Tempo_TeamRoles.jar file that was made with Maven. 
+You should be able to run it with "java -jar .\Tempo_TeamRoles.jar". You should see some debugging output. 
+
+The server will listen on http://localhost:8080.
+
+Under the postman-request folder there is a json file which you can import in Postman for a collection of requests.
+
+## CHALLENGES:
 
 #### Roles
 I decided that having the three pre-defined roles as constants in my code would be limiting. You should be able to create/delete/modify roles. I also wondered if the "Team lead" data in the Teams endpoint should be merged with my endpoint.
@@ -45,7 +53,7 @@ data on the roles I cannot simply return data from my database and be certain it
     2. I could sync the two endpoints when a request is made to the endpoint. I don´t really like that.
     3. I could only return the data I have in my database and explain in the documentation that every membership is a "Developer" membership. I don´t really like that.
     
-So I don´t really like any of these options but I opted to go with 3.
+So I don´t really like any of these options but I opted to go with 3. It kind of breaks the conformity of the two methods but I decided to do it anyway.
 
 ===========================
 
@@ -62,5 +70,23 @@ Some possible solutions to when my endpoint is queried for something that has be
 
 I don´t really like any of the options but I opted to go for option 2. The user can then delete the record if he wants to.
 
+===========================
 
 
+## API Listing
+
+#### Role Endpoint:
+
+    GET /roles                              - Get all Roles
+    GET /roles/{roleId}                     - Get a particular Role by id   
+    POST /roles                             - Create a new Role
+    DELETE /roles/{roleId}                  - Delete a role by id
+
+#### MembershipRole Endpoint:
+
+    GET /membershipRoles                    - Get all MembershipRoles
+    GET /membershipRoles/{id}               - Get a particular MembershipRole by id
+    GET /membershipRoles/{userId}/{teamId}  - Get a particular MembershipRole by userId and teamId
+    GET /membershipRoles?roleId={roleId}    - Get all MembershipRoles by roleId
+    POST /membershipRoles                   - Create a new MembershipRole
+    DELETE /membershipRoles                 - Delete a MembershipRole by id

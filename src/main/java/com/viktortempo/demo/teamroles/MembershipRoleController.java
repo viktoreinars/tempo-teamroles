@@ -4,7 +4,6 @@ import com.viktortempo.demo.roles.Role;
 import com.viktortempo.demo.roles.RoleRepository;
 import com.viktortempo.demo.services.User;
 import com.viktortempo.demo.services.UserService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,12 +47,14 @@ class MembershipRoleController {
             if (user != null && user.IsMemberOrLeadInTeam(teamId)) {
 
                 // User exists and is a member/lead in the team - return 'default' role
-                membershipRole = new MembershipRole((long)1, userId, teamId); // TODO: Default roleId should be in config/database
+                // TODO: Default roleId should be in config/database
+                membershipRole = new MembershipRole((long)1, userId, teamId);
             }
         }
 
         // Throw exception if we could not find the MembershipRole with the given parameters
-        if (membershipRole == null) throw new RuntimeException("Could not find MembershipRole with userId " + userId + " and teamId " + teamId);
+        if (membershipRole == null)
+            throw new RuntimeException("Could not find MembershipRole with userId " + userId + " and teamId " + teamId);
 
         // Return the membershipRole
         return membershipRole;
@@ -76,7 +77,8 @@ class MembershipRoleController {
 
         // Check if MembershipRole already exists
         MembershipRole existingMembershipRole = membershipRoleRepository.findByUserIdAndTeamId(membershipRole.getUserId(), membershipRole.getTeamId());
-        if (existingMembershipRole != null) throw new RuntimeException("MembershipRole record with userId " + membershipRole.getUserId() + " and teamId " + membershipRole.getTeamId() + " already exists!");
+        if (existingMembershipRole != null)
+            throw new RuntimeException("MembershipRole record with userId " + membershipRole.getUserId() + " and teamId " + membershipRole.getTeamId() + " already exists!");
 
         // Check if role exists
         Role role = roleRepository.findById(membershipRole.getRoleId())
@@ -86,7 +88,8 @@ class MembershipRoleController {
         User user = userService.GetUser(membershipRole.getUserId());
 
         // Check if user exists and is in given team
-        if (user == null) throw new RuntimeException("Could not find user with id " + membershipRole.getUserId() + " in Teams endpoint");
+        if (user == null)
+            throw new RuntimeException("Could not find user with id " + membershipRole.getUserId() + " in Teams endpoint");
         if (!user.IsMemberOrLeadInTeam(membershipRole.getTeamId()))
             throw new RuntimeException("User " + membershipRole.getUserId() + " is not a lead or a member in team " + membershipRole.getTeamId());
 
